@@ -34,4 +34,8 @@ pub enum FrameEffect {
     Tombstone,
     UpsideDownDfc,
     WaxingAndWaningMoonDfc,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

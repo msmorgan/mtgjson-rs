@@ -7,4 +7,8 @@ use serde::{Deserialize, Serialize};
 pub enum BoosterType {
     Deck,
     Default,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

@@ -18,4 +18,8 @@ pub enum Availability {
 
     #[serde(rename = "shandalar")]
     Shandalar,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

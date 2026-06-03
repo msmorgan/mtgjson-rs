@@ -18,4 +18,8 @@ pub enum FrameVersion {
 
     #[serde(rename = "future")]
     Future,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

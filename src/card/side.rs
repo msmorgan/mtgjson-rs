@@ -10,4 +10,8 @@ pub enum Side {
     C,
     D,
     E,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

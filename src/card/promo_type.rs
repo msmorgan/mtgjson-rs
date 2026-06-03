@@ -136,4 +136,8 @@ pub enum PromoType {
     UpsideDownBack,
     Vault,
     WizardsPlayNetwork,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

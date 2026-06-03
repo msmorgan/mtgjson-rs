@@ -30,4 +30,8 @@ pub enum Layout {
     Token,
     Transform,
     Vanguard,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

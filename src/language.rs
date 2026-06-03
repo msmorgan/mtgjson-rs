@@ -57,4 +57,32 @@ pub enum Language {
 
     #[serde(rename = "Spanish")]
     Spanish,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
+}
+
+#[cfg(all(test, feature = "unknown_variants"))]
+mod tests {
+    use super::Language;
+
+    #[test]
+    fn unknown_language_as_map_key() {
+        use std::collections::HashMap;
+
+        // Mirrors `HashMap<Language, Option<String>>` in `Set`.
+        let json = r#"{"English": "Lightning Bolt", "Klingon": "'ul tlhegh", "Crow": "SQUAWK"}"#;
+        let m: HashMap<Language, Option<String>> = serde_json::from_str(json).unwrap();
+
+        assert_eq!(m[&Language::English].as_ref().unwrap(), "Lightning Bolt");
+        assert_eq!(
+            m[&Language::Unknown("Klingon".into())].as_ref().unwrap(),
+            "'ul tlhegh"
+        );
+        assert_eq!(
+            m[&Language::Unknown("Crow".into())].as_ref().unwrap(),
+            "SQUAWK"
+        );
+    }
 }

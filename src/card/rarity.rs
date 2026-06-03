@@ -11,4 +11,8 @@ pub enum Rarity {
     Rare,
     Special,
     Uncommon,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

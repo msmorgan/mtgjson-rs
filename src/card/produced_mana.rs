@@ -27,4 +27,8 @@ pub enum ProducedMana {
 
     #[serde(rename = "W")]
     White,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

@@ -15,4 +15,8 @@ pub enum Finish {
 
     #[serde(rename = "signed")]
     Signed,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

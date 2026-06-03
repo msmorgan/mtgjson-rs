@@ -11,4 +11,8 @@ pub enum BorderColor {
     Silver,
     White,
     Yellow,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }

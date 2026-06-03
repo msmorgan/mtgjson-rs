@@ -5,6 +5,16 @@
 
 Unofficially provided lightweight models of the data provided by MTGJSON.
 
+## Features
+
+-   `unknown_variants` — Off by default. When enabled, every string enum that can
+    grow over time (rarity, layout, promo type, frame effect, language, etc.)
+    gains an `Unknown(UnknownStr)` variant, so deserialization tolerates values
+    added to MTGJSON after this crate was published instead of failing. The value
+    is captured in [`UnknownStr`], a `Copy` wrapper around an interned `&'static
+    str` that derefs to `str`, so the enums stay `Copy`. Enabling this is a mild
+    breaking change for code that matches these enums exhaustively.
+
 ## License
 
 Licensed under either of

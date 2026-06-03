@@ -26,3 +26,4 @@ serde_path_to_error = "0.1"
 default = []
 local_tests = []
 network_tests = []
+unknown_variants = []

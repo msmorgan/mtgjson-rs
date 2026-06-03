@@ -11,4 +11,8 @@ pub enum SecurityStamp {
     Heart,
     Oval,
     Triangle,
+
+    #[cfg(feature = "unknown_variants")]
+    #[serde(untagged)]
+    Unknown(crate::unknown::UnknownStr),
 }
