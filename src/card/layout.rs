@@ -21,6 +21,7 @@ pub enum Layout {
     Mutate,
     Normal,
     Planar,
+    Prepare,
     Prototype,
     ReversibleCard,
     Saga,

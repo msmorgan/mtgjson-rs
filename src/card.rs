@@ -16,12 +16,14 @@ mod frame_version;
 mod layout;
 mod leadership_skills;
 mod legalities;
+mod produced_mana;
 mod promo_type;
 mod rarity;
 mod related_cards;
 mod ruling;
 mod security_stamp;
 mod side;
+mod token_product;
 
 pub use availability::*;
 pub use booster_type::*;
@@ -35,12 +37,14 @@ pub use frame_version::*;
 pub use layout::*;
 pub use leadership_skills::*;
 pub use legalities::*;
+pub use produced_mana::*;
 pub use promo_type::*;
 pub use rarity::*;
 pub use related_cards::*;
 pub use ruling::*;
 pub use security_stamp::*;
 pub use side::*;
+pub use token_product::*;
 
 /// Represents a unique card, not specific to any one printing.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -131,6 +135,9 @@ pub struct AtomicCard {
 
     /// A list of set printing codes the card was printed in, formatted in uppercase.
     pub printings: Option<Vec<String>>,
+
+    /// A list of colors of mana the card can produce.
+    pub produced_mana: Option<Vec<ProducedMana>>,
 
     /// Links that navigate to websites where the card can be purchased.
     pub purchase_urls: PurchaseUrls,
@@ -249,14 +256,6 @@ pub struct SetCard {
     /// If the card marked by Wizards of the Coast for having sensitive content. Cards with this property may have missing or degraded properties and values.
     pub has_content_warning: Option<bool>,
 
-    /// If the card can be found in foil. Use the `finishes` property.
-    #[deprecated(since = "5.2.0", note = "Will be removed in 5.3.0")]
-    pub has_foil: bool,
-
-    /// If the card can be found in non-foil. Use the `finishes` property.
-    #[deprecated(since = "5.2.0", note = "Will be removed in 5.3.0")]
-    pub has_non_foil: bool,
-
     /// A list of identifiers associated to a card.
     pub identifiers: Identifiers,
 
@@ -265,6 +264,8 @@ pub struct SetCard {
 
     /// If the card has full artwork.
     pub is_full_art: Option<bool>,
+    /// If the card is a Game Changer card.
+    pub is_game_changer: Option<bool>,
 
     /// If the card is part of a funny set.
     pub is_funny: Option<bool>,
@@ -286,10 +287,6 @@ pub struct SetCard {
 
     /// If the card is on the Magic: The Gathering Reserved List.
     pub is_reserved: Option<bool>,
-
-    /// If the card is found in a starter deck such as Planeswalker/Brawl decks.
-    #[deprecated(since = "5.2.1", note = "Will be removed in 5.3.0")]
-    pub is_starter: Option<bool>,
 
     /// If the card is a Story Spotlight card.
     pub is_story_spotlight: Option<bool>,
@@ -347,9 +344,19 @@ pub struct SetCard {
 
     /// A list of card UUID's to this card's counterparts, such as transformed or melded faces.
     pub other_face_ids: Option<Vec<Uuid>>,
+    /// The actual printed name on the card face.
+    pub printed_name: Option<String>,
+
+    /// The actual printed rules text on the card face.
+    pub printed_text: Option<String>,
+
+    /// The actual printed type line on the card face.
+    pub printed_type: Option<String>,
 
     /// The power of the card.
     pub power: Option<String>,
+    /// A list of colors of mana the card can produce.
+    pub produced_mana: Option<Vec<ProducedMana>>,
 
     /// A list of set printing codes the card was printed in, formatted in uppercase.
     pub printings: Option<Vec<String>>,
@@ -395,6 +402,8 @@ pub struct SetCard {
 
     /// A list of card supertypes found before em-dash.
     pub supertypes: Vec<String>,
+    /// A list of UUID's of tokens created by this card within the set.
+    pub tokens: Option<Vec<Uuid>>,
 
     /// The rules text of the card.
     pub text: Option<String>,
@@ -473,14 +482,6 @@ pub struct TokenCard {
     /// The version of the card frame style.
     pub frame_version: FrameVersion,
 
-    /// If the card can be found in foil. Use the finishes property.
-    #[deprecated]
-    pub has_foil: bool,
-
-    /// If the card can be found in non-foil. Use the finishes property.
-    #[deprecated]
-    pub has_non_foil: bool,
-
     /// A list of identifiers associated to a card.
     pub identifiers: Identifiers,
 
@@ -538,10 +539,6 @@ pub struct TokenCard {
     /// Related cards.
     pub related_cards: Option<RelatedCards>,
 
-    /// Reverse related cards.
-    #[deprecated(since = "5.2.1", note = "Will be removed in 5.3.0")]
-    pub reverse_related: Vec<String>,
-
     /// The security stamp printed on the card.
     pub security_stamp: Option<SecurityStamp>,
 
@@ -559,6 +556,12 @@ pub struct TokenCard {
 
     /// A list of card supertypes found before em-dash.
     pub supertypes: Vec<String>,
+    /// A list of purchasable products containing the token, linking together
+    /// the faces of double-sided tokens.
+    pub token_products: Option<Vec<TokenProduct>>,
+
+    /// A list of UUID's of tokens created by this card within the set.
+    pub tokens: Option<Vec<Uuid>>,
 
     /// The rules text of the card.
     pub text: Option<String>,

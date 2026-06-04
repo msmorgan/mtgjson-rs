@@ -32,6 +32,12 @@ pub struct DeckSet {
     /// The cards in the side-board.
     pub side_board: Vec<CardSetDeck>,
 
+    /// The printing set codes that the cards in the deck are sourced from.
+    pub source_set_codes: Vec<String>,
+
+    /// The token cards in the deck.
+    pub tokens: Option<Vec<CardSetDeck>>,
+
     /// The type of deck.
     #[serde(rename = "type")]
     pub deck_set_type: String,

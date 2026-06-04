@@ -7,7 +7,7 @@ categories = ["data-structures"]
 description = "Unofficially provided lightweight models of the data provided by MTGJSON."
 homepage = "https://github.com/Rigidity/mtgjson-rs"
 repository = "https://github.com/Rigidity/mtgjson-rs"
-version = "5.2.2"
+version = "5.3.0"
 edition = "2024"
 
 [dependencies]
