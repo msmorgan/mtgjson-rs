@@ -24,6 +24,8 @@ fn intern(s: &str) -> &'static str {
     }
     let leaked: &'static str = Box::leak(Box::from(s));
     set.insert(leaked);
+    #[cfg(test)]
+    testing::maybe_warn(leaked);
     leaked
 }
 
@@ -114,6 +116,37 @@ impl<'de> Deserialize<'de> for UnknownStr {
 impl Serialize for UnknownStr {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         serializer.serialize_str(self.as_str())
+    }
+}
+
+#[cfg(test)]
+pub(crate) mod testing {
+    thread_local! {
+        static ENABLE_WARNINGS: std::cell::Cell<bool> = Default::default();
+    }
+
+    /// RAII guard to show warnings about unknown variants for the current test.
+    /// Add at the beginning of a test: `let _guard = EnableWarnings::guard();`.
+    ///
+    /// Use `cargo test -- --no-capture` to see these warnings.
+    pub(crate) struct EnableWarnings(());
+    impl EnableWarnings {
+        #[must_use]
+        pub fn guard() -> Self {
+            assert!(!ENABLE_WARNINGS.replace(true), "already enabled");
+            Self(())
+        }
+    }
+    impl Drop for EnableWarnings {
+        fn drop(&mut self) {
+            ENABLE_WARNINGS.set(false);
+        }
+    }
+
+    pub(super) fn maybe_warn(interned: &'static str) {
+        if ENABLE_WARNINGS.get() {
+            eprintln!("unknown::UnknownStr({interned:?})");
+        }
     }
 }
 
